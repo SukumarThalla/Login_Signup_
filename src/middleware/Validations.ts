@@ -29,10 +29,10 @@ export const validationCheck = async (c: any, next: any) => {
   }
 };
 
-export const newpasswordValidation = async (c: any, next: any) => {
+export const newPasswordValidation = async (c: any, next: any) => {
   const { newPassword } = await c.req.json();
   if (!newPassword) {
-    return c.json({ error: "Please enter your Newpassword" });
+    return c.json({ error: "Please enter your New Password" });
   }
 
   if (!Password_validation.test(newPassword)) {

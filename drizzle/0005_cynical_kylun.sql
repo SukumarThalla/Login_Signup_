@@ -1,0 +1,1 @@
+ALTER TABLE "PasswordRejectToken" DROP CONSTRAINT "PasswordRejectToken_Email_unique";

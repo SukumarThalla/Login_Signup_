@@ -9,9 +9,9 @@ export const usersData = pgTable("usersData", {
   password: varchar("Password", { length: 255 }).notNull(),
 });
 
-export const PasswordRejecttoken = pgTable("PasswordRejecttoken", {
+export const PasswordRejectToken = pgTable("PasswordRejectToken", {
   Id: serial("Id").primaryKey(),
-  email: varchar("Email", { length: 255 }).unique().notNull(),
+  email: varchar("Email", { length: 255 }).notNull(),
   token: varchar("token", { length: 255 }).notNull(),
   expires_date: timestamp("expires_at").notNull(),
 });

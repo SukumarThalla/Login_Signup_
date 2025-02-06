@@ -1,21 +1,14 @@
 import { Hono } from "Hono";
 import { serve } from "@hono/node-server";
-import "./config/db";
-import { signUp } from "./route/signUp";
-import { login } from "./route/login";
-import { forgetPassword } from "./route/forgetpassword";
-import { resetPassword } from "./route/resetPassword";
-
+import "./db/dbConnection";
+import { route_Handlers } from "./routes/auth_routers";
 const app = new Hono();
 
 app.get("/", (c) => {
   return c.json({ success: "HI WELCOME PLEASE LOGIN WIH YOUR DETAILS" }, 200);
 });
 
-app.route("/signup", signUp);
-app.route("/login", login);
-app.route("/forget-password", forgetPassword);
-app.route("/reset-password", resetPassword);
+app.route("/", route_Handlers);
 
 serve({
   fetch: app.fetch,

@@ -1,8 +1,8 @@
-import { db } from "../config/db";
-import { eq } from "drizzle-orm";
-import { PasswordRejecttoken, usersData } from "../models/usersData";
-class userDataQueires {
-  async Exist_check(email: string) {
+import { db } from "../db/dbConnection";
+import { eq, desc } from "drizzle-orm";
+import { PasswordRejectToken, usersData } from "../db/schemes/usersData";
+class UserDataQuire {
+  async accountExistCheck(email: string) {
     return await db
       .select()
       .from(usersData)
@@ -10,41 +10,51 @@ class userDataQueires {
       .execute();
   }
 
-  async Put_query(email: string, password: any) {
+  async signinDetailsCheck(email: string) {
+    return await db
+      .select()
+      .from(usersData)
+      .where(eq(usersData.email, email))
+      .execute();
+  }
+
+  async passwordChangeTokenStore(
+    email: string,
+    token: string,
+    expiresDate: any
+  ) {
+    return await db
+      .insert(PasswordRejectToken)
+      .values({
+        email: email,
+        expires_date: expiresDate,
+        token: token,
+      })
+      .execute();
+  }
+
+  async storingNewAccountDetails(email: string, password: any) {
     return await db
       .insert(usersData)
       .values({ email: email, password: password })
       .execute();
   }
 
-  async Login_Put_query(e: string) {
+  async getTokenFromPassDb(e: any) {
     return await db
       .select()
-      .from(usersData)
-      .where(eq(usersData.email, e))
+      .from(PasswordRejectToken)
+      .where(eq(PasswordRejectToken.email, e))
+      .orderBy(desc(PasswordRejectToken.Id))
+      .limit(1)
       .execute();
   }
 
-  async tokenStore(email: string, token: string, expireTime: any) {
-    return await db
-      .insert(PasswordRejecttoken)
-      .values({ email: email, token: token, expires_date: expireTime })
-      .execute();
-  }
-
-  async Get_token(e: any) {
+  async existUserCheckForNewPassword(email: any) {
     return await db
       .select()
-      .from(PasswordRejecttoken)
-      .where(eq(PasswordRejecttoken.email, e))
-      .execute();
-  }
-
-  async Exist_check_fortoken(e: any) {
-    return await db
-      .select()
-      .from(PasswordRejecttoken)
-      .where(eq(PasswordRejecttoken.email, e))
+      .from(PasswordRejectToken)
+      .where(eq(PasswordRejectToken.email, email))
       .execute();
   }
 
@@ -56,18 +66,18 @@ class userDataQueires {
       .execute();
   }
 
-  async Update_password(newPassword: any, e: any) {
+  async updatePassword(email: string, newHashPassword: string) {
     return await db
       .update(usersData)
-      .set({ password: newPassword })
-      .where(eq(usersData.email, e));
+      .set({ password: newHashPassword })
+      .where(eq(usersData.email, email));
   }
 
-  async Delete_token(email: any) {
+  async deleteToken(email: any) {
     return await db
-      .delete(PasswordRejecttoken)
-      .where(eq(PasswordRejecttoken.email, email));
+      .delete(PasswordRejectToken)
+      .where(eq(PasswordRejectToken.email, email));
   }
 }
 
-export const UserDataQueires = new userDataQueires();
+export const UserDataQuires = new UserDataQuire();

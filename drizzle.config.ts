@@ -3,7 +3,7 @@ import fs from "fs";
 dotenv.config();
 
 export default {
-  schema: "./src/models/*",
+  schema: "./src/db/schemes/*",
   out: "./drizzle",
   dialect: "postgresql",
   dbCredentials: {

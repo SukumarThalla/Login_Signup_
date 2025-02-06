@@ -29,6 +29,20 @@
       "when": 1738392590589,
       "tag": "0003_fluffy_the_professor",
       "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1738723892544,
+      "tag": "0004_rare_wendigo",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1738735704838,
+      "tag": "0005_cynical_kylun",
+      "breakpoints": true
     }
   ]
 }
